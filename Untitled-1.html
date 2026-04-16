@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V1TIZ | PREMIUM MARKET</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.45);
+            --border: rgba(255, 255, 255, 0.7);
+            --accent: #007AFF;
+            --text: #1d1d1f;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            overflow-x: hidden;
+        }
+
+        /* ФОН */
+        .bg-fixed {
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%;
+            background: url('bg.jpg') center/cover no-repeat;
+            z-index: -2;
+        }
+
+        .blur-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            backdrop-filter: blur(12px) brightness(1.05); 
+            -webkit-backdrop-filter: blur(12px) brightness(1.05);
+            z-index: -1;
+        }
+
+        /* НАВИГАЦИЯ */
+        nav {
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            background: var(--glass); backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000;
+        }
+
+        .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+        .nav-item { 
+            cursor: pointer; font-size: 0.6rem; font-weight: 800; text-transform: uppercase;
+            padding: 8px 12px; border-radius: 12px; transition: 0.3s;
+        }
+        .nav-item:hover { background: #fff; color: var(--accent); }
+
+        /* КОНТЕНТ */
+        .page { 
+            display: none; padding: 40px 5%; max-width: 1100px; margin: 0 auto; 
+            animation: slideIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .page.active { display: block; }
+        
+        @keyframes slideIn { 
+            from { opacity: 0; transform: scale(0.98) translateY(20px); } 
+            to { opacity: 1; transform: scale(1) translateY(0); } 
+        }
+
+        .glass-panel {
+            background: var(--glass); backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid var(--border); border-radius: 35px; padding: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05); text-align: center;
+            transition: 0.3s;
+        }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+
+        .btn {
+            background: #fff; color: #000; border: none; padding: 15px 25px;
+            border-radius: 15px; font-weight: 700;
+            cursor: pointer; transition: 0.3s; width: 100%; margin-top: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-transform: uppercase; font-size: 0.7rem;
+        }
+        .btn:hover { background: var(--text); color: #fff; transform: translateY(-3px); }
+        .btn-accent { background: var(--accent); color: #fff; }
+
+        input {
+            width: 100%; padding: 15px; border-radius: 15px; border: 1px solid var(--border);
+            background: rgba(255,255,255,0.6); font-size: 1.1rem; font-weight: 700; text-align: center;
+            outline: none; margin-bottom: 10px;
+        }
+
+        /* КАРТИНКИ В МЕНЮ */
+        .card-img {
+            width: 85px; height: 85px; border-radius: 20px; 
+            object-fit: cover; background: rgba(255, 255, 255, 0.2); 
+            border: 1px solid var(--border); box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
+            mix-blend-mode: multiply; margin-bottom: 15px;
+        }
+
+        /* МОДАЛКА */
+        #payment-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2000; background: rgba(0,0,0,0.2); backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(255,255,255,0.98); padding: 50px; border-radius: 40px; text-align: center;
+            width: 90%; max-width: 450px; box-shadow: 0 40px 80px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-fixed"></div>
+    <div class="blur-overlay"></div>
+
+    <nav>
+        <div style="font-weight: 800; font-size: 1.2rem; cursor: pointer;" onclick="showPage('home')">V1TIZ</div>
+        <div class="nav-links">
+            <span class="nav-item" onclick="showPage('home')">Главное</span>
+            <span class="nav-item" onclick="alert('Чат скоро появится!')">Чат</span>
+            <span class="nav-item" onclick="window.open('https://t.me/V1tiz')">Поддержка</span>
+            <span class="nav-item" onclick="showPage('auth')">Вход / Регистрация</span>
+        </div>
+    </nav>
+
+    <!-- ГЛАВНАЯ -->
+    <div id="home" class="page active">
+        <h1 style="text-align: center; margin-bottom: 40px; font-size: 2.5rem; font-weight: 800;">MARKET</h1>
+        <div class="grid">
+            
+            <div class="glass-panel" onclick="showPage('page-stars')" style="cursor: pointer;">
+                <img src="stars_img.jpg" alt="STARS" class="card-img">
+                <h2>STARS</h2>
+                <button class="btn" onclick="event.stopPropagation(); showPage('page-stars')">ОФОРМИТЬ</button>
+            </div>
+
+            <div class="glass-panel" onclick="showPage('page-ton')" style="cursor: pointer;">
+                <img src="TON_im.jpg" alt="TON" class="card-img">
+                <h2>TON</h2>
+                <button class="btn" onclick="event.stopPropagation(); showPage('page-ton')">ОФОРМИТЬ</button>
+            </div>
+
+            <div class="glass-panel" onclick="showPage('page-nft')" style="cursor: pointer;">
+                <img src="Plush Pepe NFT.jpg" alt="NFT" class="card-img">
+                <h2>NFT</h2>
+                <button class="btn" onclick="event.stopPropagation(); showPage('page-nft')">МАРКЕТ</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- STARS PAGE -->
+    <div id="page-stars" class="page">
+        <div class="glass-panel" style="max-width: 500px; margin: 0 auto;">
+            <h2 style="margin-bottom: 20px;">ПОКУПКА STARS</h2>
+            <p style="margin-bottom: 10px; font-size: 0.8rem;">Минимум 50 звезд (1.5₽ за шт.)</p>
+            <input type="number" id="stars-input" value="50" min="50" oninput="calcStars()">
+            <div id="stars-total" style="font-size: 1.4rem; font-weight: 800; color: var(--accent); margin: 15px 0;">Итого: 75 рублей</div>
+            <button class="btn btn-accent" onclick="showPayment()">ОПЛАТИТЬ</button>
+            <button class="btn" onclick="showPage('home')">НАЗАД</button>
+        </div>
+    </div>
+
+    <!-- TON PAGE -->
+    <div id="page-ton" class="page">
+        <div class="glass-panel" style="max-width: 500px; margin: 0 auto;">
+            <h2 style="margin-bottom: 20px;">КУПИТЬ TON</h2>
+            <p style="margin-bottom: 10px; font-size: 0.8rem;">Курс: 1 TON = 110 рублей</p>
+            <input type="number" id="ton-input" placeholder="Введите кол-во TON" oninput="calcTon()">
+            <div id="ton-total" style="font-size: 1.4rem; font-weight: 800; color: var(--accent); margin: 15px 0;">Сумма: 0 рублей</div>
+            <button class="btn btn-accent" onclick="showPayment()">ОПЛАТИТЬ</button>
+            <button class="btn" onclick="showPage('home')">НАЗАД</button>
+        </div>
+    </div>
+
+    <!-- NFT PAGE -->
+    <div id="page-nft" class="page">
+        <h1 style="text-align: center; margin-bottom: 30px; font-weight: 800;">NFT HUB</h1>
+        <div class="grid">
+            <div class="glass-panel">
+                <h3>СОЗДАТЬ ТОВАР</h3>
+                <button class="btn btn-accent">НАЧАТЬ</button>
+            </div>
+            <div class="glass-panel">
+                <h3>ПРОДАЖА ТОВАРОВ</h3>
+                <button class="btn">ПЕРЕЙТИ</button>
+            </div>
+        </div>
+        <button class="btn" style="max-width: 200px; margin: 30px auto; display: block;" onclick="showPage('home')">НАЗАД В МЕНЮ</button>
+    </div>
+
+    <!-- AUTH -->
+<div id="auth" class="page">
+    <div class="glass-panel" style="max-width: 400px; margin: 0 auto;">
+        
+        <!-- Форма входа -->
+        <div id="login-form-box">
+            <h2 style="font-family: 'Syncopate'; margin-bottom: 20px;">ВХОД</h2>
+            <form onsubmit="event.preventDefault(); alert('Вход выполнен!'); showPage('home');">
+                <input type="text" placeholder="Логин" required>
+                <input type="password" placeholder="Пароль" required>
+                <button type="submit" class="btn btn-accent">ВОЙТИ</button>
+            </form>
+            <p style="margin-top: 15px; font-size: 0.8rem; cursor: pointer; color: var(--accent);" onclick="toggleAuthForms()">Нет аккаунта? Зарегистрироваться</p>
+        </div>
+
+        <!-- Форма регистрации -->
+        <div id="register-form-box" style="display: none;">
+            <h2 style="font-family: 'Syncopate'; margin-bottom: 20px;">РЕГИСТРАЦИЯ</h2>
+            <form onsubmit="event.preventDefault(); alert('Аккаунт создан!'); toggleAuthForms();">
+                <input type="text" placeholder="Имя пользователя" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Пароль" required>
+                <button type="submit" class="btn btn-accent">СОЗДАТЬ АККАУНТ</button>
+            </form>
+            <p style="margin-top: 15px; font-size: 0.8rem; cursor: pointer; color: var(--accent);" onclick="toggleAuthForms()">Уже есть аккаунт? Войти</p>
+        </div>
+
+        <button class="btn" style="margin-top: 10px;" onclick="showPage('home')">ОТМЕНА</button>
+    </div>
+</div>
+
+    <!-- МОДАЛКА ОПЛАТЫ -->
+    <div id="payment-modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <p style="font-size: 1.2rem; font-weight: 800; color: #000;">
+                За оплатой писать в Telegram <br>
+                <span style="color: var(--accent); font-size: 1.8rem; display: block; margin-top: 10px;">@v1tiz</span>
+            </p>
+            <button class="btn" style="margin-top: 30px;" onclick="closeModal()">ЗАКРЫТЬ</button>
+        </div>
+    </div>
+
+    <script>
+        firebase-app-compat.js
+        firebase-auth-compat.js
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById(id);
+            if(target) {
+                target.classList.add('active');
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        }
+
+        function calcStars() {
+            let val = document.getElementById('stars-input').value;
+            if(val < 50 && val !== "") { val = 50; document.getElementById('stars-input').value = 50; }
+            document.getElementById('stars-total').innerText = `Итого: ${val * 1.5} рублей`;
+        }
+
+        function calcTon() {
+            let val = document.getElementById('ton-input').value;
+            document.getElementById('ton-total').innerText = `Сумма: ${val * 110} рублей`;
+        }
+
+        function showPayment() {
+            document.getElementById('payment-modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('payment-modal').style.display = 'none';
+        }
+        function toggleAuthForms() {
+    const loginBox = document.getElementById('login-form-box');
+    const registerBox = document.getElementById('register-form-box');
+    
+    if (loginBox.style.display === 'none') {
+        loginBox.style.display = 'block';
+        registerBox.style.display = 'none';
+    } else {
+        loginBox.style.display = 'none';
+        registerBox.style.display = 'block';
+    }
+}
+    </script>
+</body>
+</html>
